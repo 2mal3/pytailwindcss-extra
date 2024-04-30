@@ -1,3 +1,4 @@
+from os import environ
 import logging
 
 log = logging.getLogger("pytailwindcss-extra")
@@ -8,7 +9,10 @@ _formatter = logging.Formatter(
     datefmt="%d-%m-%y %H:%M:%S",
 )
 
-_LEVEL = logging.DEBUG
+if environ.get("DEBUG"):
+    _LEVEL = logging.DEBUG
+else:
+    _LEVEL = logging.INFO
 _console_handler = logging.StreamHandler()
 _console_handler.setLevel(_LEVEL)
 _console_handler.setFormatter(_formatter)
