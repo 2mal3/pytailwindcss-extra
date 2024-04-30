@@ -12,6 +12,7 @@ on:
     paths:
       - "**.py"
       - "**.toml"
+  workflow_dispatch:
 
 jobs:
   ruff-lint:
