@@ -1,11 +1,10 @@
-from os import environ, path, mkdir, chmod
-from stat import S_IXUSR, S_IRUSR, S_IWUSR
+from os import environ, path, mkdir
+from stat import S_IXUSR
 from sys import argv, exit
 from platform import system, machine
 from subprocess import run
 from pathlib import Path
 
-from get_project_root import root_path
 import niquests
 
 from pytailwindcss_extra.logger import log
@@ -14,10 +13,9 @@ GITHUB_REPO = "dobicinaitis/tailwind-cli-extra"
 
 
 def main() -> None:
-    bin_dir = environ.get("PYTAILWINDCSS_EXTRA_BIN_DIR")
-    if not bin_dir:
-        project_root_path = root_path(ignore_cwd=True)
-        bin_dir = Path(__file__).parent.resolve() / "bin"
+    bin_dir_path = environ.get("PYTAILWINDCSS_EXTRA_BIN_DIR")
+    if not bin_dir_path:
+        bin_dir_path = Path(__file__).parent.resolve() / "bin"
 
     # TODO: cache the latest version so it doesn't need to send a request each run
     version = environ.get("PYTAILWINDCSS_EXTRA_VERSION", "latest")
@@ -29,21 +27,21 @@ def main() -> None:
         response.raise_for_status()
         version = response.json()["tag_name"]
 
-    bin_path = path.join(bin_dir, f"tailwindcss-extra-{version.replace('.', '-')}")
-    if not path.exists(bin_path):
+    bin_path = bin_dir_path / f"tailwindcss-extra-{version.replace('.', '-')}"
+    if not bin_path.exists():
         log.info(f"Installing tailwindcss-extra {version} ...")
-        if not path.exists(bin_dir):
-            mkdir(bin_dir)
+        if not bin_dir_path.exists():
+            bin_dir_path.mkdir(parents=True)
         install(bin_path, version)
         # TODO: remove old versions
 
-    log.debug(f"Running {bin_path}...")
+    log.debug(f"Running {bin_path} ...")
     result = run([bin_path] + argv[1:], check=False)
     exit(result.returncode)
 
 
 # TODO: remove partially downloaded file on error
-def install(bin_path: str, version: str) -> None:
+def install(bin_path: Path, version: str) -> None:
     os = system().lower()
     if not os:
         raise RuntimeError("Unknown OS")
@@ -71,7 +69,7 @@ def install(bin_path: str, version: str) -> None:
             for chunk in request.iter_content(chunk_size=1024 * 1024):
                 bin_file.write(chunk)
 
-    chmod(bin_path, S_IXUSR | S_IRUSR | S_IWUSR)
+    bin_path.chmod(bin_path.stat().st_mode | S_IXUSR)
 
 
 if __name__ == "__main__":
