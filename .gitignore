@@ -11,3 +11,6 @@ wheels/
 
 # editor files
 .idea/
+
+# program generated files
+bin/
