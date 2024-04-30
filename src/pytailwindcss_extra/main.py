@@ -1,4 +1,4 @@
-from os import environ, path, mkdir
+from os import environ
 from stat import S_IXUSR
 from sys import argv, exit
 from platform import system, machine
