@@ -49,7 +49,7 @@ def install(bin_path: Path, version: str) -> None:
     if not arch:
         raise RuntimeError("Unknown system architecture")
 
-    os_name = {"linux": "linux", "darwin": "macos", "win32": "windows"}[os]
+    os_name = {"linux": "linux", "darwin": "macos", "win32": "windows", "windows": "windows"}[os]
     arch_name = {
         "x86_64": "x64",
         "amd64": "x64",
