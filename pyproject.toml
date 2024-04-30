@@ -18,7 +18,7 @@ line-length = 100
 select = ["E4", "E7", "E9", "F", "C", "N", "ANN", "A", "SIM", "PL"]
 
 [project.scripts]
-pytailwindcss-extra = "pytailwindcss_extra.__main__:main"
+tailwindcss-extra = "pytailwindcss_extra.__main__:main"
 
 [build-system]
 requires = ["hatchling"]
