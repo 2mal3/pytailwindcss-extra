@@ -51,7 +51,7 @@ jobs:
         with:
           cache: pip
       - name: Install Dependencies
-        run: pip install -r requirements.txt
+        run: pip install -r requirements.lock
 
       - name: Run Test
         run: python -m pytailwindcss_extra
