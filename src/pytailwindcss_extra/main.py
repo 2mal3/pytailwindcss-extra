@@ -29,13 +29,12 @@ def main() -> None:
 
     bin_path = bin_dir_path / f"tailwindcss-extra-{version.replace('.', '-')}"
     if not bin_path.exists():
-        log.info(f"Installing tailwindcss-extra {version} ...")
         if not bin_dir_path.exists():
             bin_dir_path.mkdir(parents=True)
         install(bin_path, version)
         # TODO: remove old versions
 
-    log.debug(f"Running {bin_path} ...")
+    log.debug(f"Running '{bin_path}' ...")
     result = run([bin_path] + argv[1:], check=False)
     exit(result.returncode)
 
@@ -61,7 +60,7 @@ def install(bin_path: Path, version: str) -> None:
     ending = {"linux": "", "macos": "", "windows": ".exe"}[os_name]
     download_url = f"https://github.com/{GITHUB_REPO}/releases/download/{version}/tailwindcss-extra-{os_name}-{arch_name}{ending}"
 
-    log.debug(f"Downloading for {os_name}-{arch_name} ...")
+    log.info(f"Downloading for 'tailwindcss-extra-{os_name}-{arch_name}' {version}...")
 
     with niquests.get(download_url, stream=True) as request:
         request.raise_for_status()

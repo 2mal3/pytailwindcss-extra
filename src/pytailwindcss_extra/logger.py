@@ -5,7 +5,7 @@ log = logging.getLogger("pytailwindcss-extra")
 log.setLevel(logging.DEBUG)
 
 _formatter = logging.Formatter(
-    "[%(asctime)s] [pytailwindcss-extra/%(levelname)s]: %(message)s",
+    "[%(levelname)s]: %(message)s",
     datefmt="%d-%m-%y %H:%M:%S",
 )
 
