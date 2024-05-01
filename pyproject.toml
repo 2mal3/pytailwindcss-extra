@@ -10,7 +10,7 @@ dependencies = [
     "niquests==3.*",
 ]
 readme = "README.md"
-license = "LGPLv3"
+license = "LGPL-3.0"
 requires-python = ">= 3.8"
 target-version = "py38"
 classifiers = [
@@ -33,6 +33,7 @@ Homepage = "https://github.com/2mal3/pytailwindcss-extra"
 Repository = "https://github.com/2mal3/pytailwindcss-extra"
 Issues = "https://github.com/2mal3/pytailwindcss-extra/issues"
 
+[tool.ruff]
 line-length = 100
 
 [tool.ruff.lint]
