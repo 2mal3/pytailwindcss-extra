@@ -12,7 +12,6 @@ dependencies = [
 readme = "README.md"
 license = "LGPL-3.0"
 requires-python = ">= 3.8"
-target-version = "py38"
 classifiers = [
     "Development Status :: 4 - Beta",
     "Intended Audience :: Developers",
@@ -35,6 +34,7 @@ Issues = "https://github.com/2mal3/pytailwindcss-extra/issues"
 
 [tool.ruff]
 line-length = 100
+target-version = "py38"
 
 [tool.ruff.lint]
 # Rules are explained here: https://docs.astral.sh/ruff/rules
