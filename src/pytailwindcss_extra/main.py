@@ -21,9 +21,7 @@ def main() -> None:
     version = environ.get("PYTAILWINDCSS_EXTRA_VERSION", "latest")
     if version == "latest":
         log.info("Getting latest tailwind-cli-extra version ...")
-        response = niquests.get(
-            f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest"
-        )
+        response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest")
         response.raise_for_status()
         version = response.json()["tag_name"]
 
