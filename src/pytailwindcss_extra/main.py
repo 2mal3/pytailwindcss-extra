@@ -60,7 +60,7 @@ def install(bin_path: Path, version: str) -> None:
     ending = {"linux": "", "macos": "", "windows": ".exe"}[os_name]
     download_url = f"https://github.com/{GITHUB_REPO}/releases/download/{version}/tailwindcss-extra-{os_name}-{arch_name}{ending}"
 
-    log.info(f"Downloading for 'tailwindcss-extra-{os_name}-{arch_name}' {version}...")
+    log.info(f"Downloading 'tailwindcss-extra-{os_name}-{arch_name}' {version} ...")
 
     with niquests.get(download_url, stream=True) as request:
         request.raise_for_status()
