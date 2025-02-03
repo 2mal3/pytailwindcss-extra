@@ -20,7 +20,7 @@ package, which allows you to install the standalone Tailwind CLI with a simple `
 
 While this package works well, there is one particular problem. Due to the binary nature of the _Tailwind CLI_, only the
 official _Tailwind CSS_ plugins are included and other plugins, especially the very popular _daisyUI_ plugin, cannot be
-installed (see #caveats).
+installed (see [Caveats](#caveats)).
 
 Although the problem cannot be solved completely, _daisyUI_ is very useful, not only for me, so the user [dobicinaitis](https://github.com/dobicinaitis)
 offers [tailwind-cli-extra](https://github.com/dobicinaitis/tailwind-cli-extra), a _Tailwind CLI_ binary patched with
