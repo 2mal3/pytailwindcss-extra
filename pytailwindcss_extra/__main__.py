@@ -6,7 +6,8 @@ from pytailwindcss_extra.logger import log
 
 if __name__ == "__main__":
     try:
-        main()
+        exit_code = main()
+        exit(exit_code)
     except Exception as e:
         log.fatal(e)
         exit(1)

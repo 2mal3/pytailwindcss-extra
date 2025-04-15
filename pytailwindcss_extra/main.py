@@ -1,7 +1,7 @@
 from os import environ, rename
 from tempfile import gettempdir
 from stat import S_IXUSR
-from sys import argv, exit
+from sys import argv
 from platform import system, machine
 from subprocess import run, CompletedProcess
 from pathlib import Path
@@ -16,7 +16,7 @@ GITHUB_REPO = "dobicinaitis/tailwind-cli-extra"
 MAJOR_TAILWIND_CLI_EXTRA_VERSION = 2
 
 
-def main() -> None:
+def main() -> int:
     temp_bin_dir_path = environ.get("PYTAILWINDCSS_EXTRA_BIN_DIR")
     if not temp_bin_dir_path:
         bin_dir_path: Path = Path(__file__).parent.resolve() / "bin"
@@ -39,7 +39,7 @@ def main() -> None:
 
     log.debug(f"Running '{bin_path}' ...")
     result = run_file_with_arguments(bin_path, argv[1:])
-    exit(result.returncode)
+    return result.returncode
 
 
 # TODO: remove partially downloaded file on error
