@@ -15,7 +15,8 @@ GITHUB_REPO = "dobicinaitis/tailwind-cli-extra"
 def main() -> None:
     bin_dir_path = environ.get("PYTAILWINDCSS_EXTRA_BIN_DIR")
     if not bin_dir_path:
-        bin_dir_path = Path(__file__).parent.resolve() / "bin"
+        bin_dir_path: Path = Path(__file__).parent.resolve() / "bin"
+    bin_dir_path = Path(bin_dir_path)
 
     # TODO: cache the latest version so it doesn't need to send a request each run
     version = environ.get("PYTAILWINDCSS_EXTRA_VERSION", "latest")
