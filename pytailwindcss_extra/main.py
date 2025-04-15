@@ -50,7 +50,7 @@ def download_url_to_path(download_url: str, dest_path: Path) -> None:
     with niquests.get(download_url, stream=True) as request:
         request.raise_for_status()
         with open(dest_path, "wb") as file:
-            for chunk in request.iter_content(chunk_size=1024 ** 3):
+            for chunk in request.iter_content(chunk_size=1024 * 1024):
                 file.write(chunk)
 
 
