@@ -7,23 +7,20 @@
 #   all-features: false
 #   with-sources: false
 #   generate-hashes: false
+#   universal: false
 
 -e file:.
-charset-normalizer==3.3.2
+charset-normalizer==3.4.1
     # via niquests
 h11==0.14.0
     # via urllib3-future
-idna==3.7
-    # via niquests
-jh2==5.0.2
+jh2==5.0.8
     # via urllib3-future
-kiss-headers==2.4.3
-    # via niquests
-niquests==3.6.1
+niquests==3.14.0
     # via pytailwindcss-extra
-qh3==1.0.4
+qh3==1.4.4
     # via urllib3-future
-urllib3-future==2.7.905
+urllib3-future==2.12.917
     # via niquests
-wassima==1.1.1
+wassima==1.2.2
     # via niquests
