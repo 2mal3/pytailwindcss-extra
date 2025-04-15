@@ -46,14 +46,12 @@ _daisyUI_ plugin for the Python ecosystem.
    download is complete, you should see the help output for the `tailwindcss-extra` command. Use it to create a 
    new project or work with an existing _Tailwind CSS_ project.
 
-3. Let's create a new project. Go to the directory where you want to host your _Tailwind CSS_ project and initialize it
-   by running:
+3. Let's create a new project. Go to the directory where you want to create your _Tailwind CSS_ project and initialize it
+   by creating an CSS file e.g. `input.css`:
 
+   ```css
+   @import "tailwindcss";
    ```
-   tailwindcss-extra init
-   ```
-
-   This command will create the default _tailwind.config.js_ file.
 
 4. Start a watcher by running:
 
