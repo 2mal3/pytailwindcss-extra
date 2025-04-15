@@ -4,11 +4,9 @@ version = "0.1.1"
 description = "Use Tailwind CSS with daisyUI without Node.js and install it via pip."
 keywords = ["cli", "tailwind", "css", "daisyui"]
 authors = [
-    { name = "2mal3", email = "56305732+2mal3@users.noreply.github.com" }
+    { name = "2mal3", email = "56305732+2mal3@users.noreply.github.com" },
 ]
-dependencies = [
-    "niquests==3.*",
-]
+dependencies = ["niquests==3.*"]
 readme = "README.md"
 license = "LGPL-3.0"
 requires-python = ">= 3.8"
@@ -56,4 +54,4 @@ dev-dependencies = []
 allow-direct-references = true
 
 [tool.hatch.build.targets.wheel]
-packages = ["src/pytailwindcss_extra"]
+packages = ["pytailwindcss_extra"]
