@@ -1,15 +1,16 @@
 from os import environ
 import logging
 
+_LEVEL = logging.INFO
+
 log = logging.getLogger("pytailwindcss-extra")
-log.setLevel(logging.DEBUG)
+log.setLevel(_LEVEL)
 
 _formatter = logging.Formatter(
-    "[%(levelname)s]: %(message)s",
+    "%(message)s",
     datefmt="%d-%m-%y %H:%M:%S",
 )
 
-_LEVEL = logging.DEBUG if environ.get("DEBUG") else logging.INFO
 _console_handler = logging.StreamHandler()
 _console_handler.setLevel(_LEVEL)
 _console_handler.setFormatter(_formatter)
