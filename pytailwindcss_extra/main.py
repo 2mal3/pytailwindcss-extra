@@ -1,10 +1,12 @@
-from os import environ
+from os import environ, rename
+from tempfile import gettempdir
 from stat import S_IXUSR
 from sys import argv, exit
 from platform import system, machine
 from subprocess import run, CompletedProcess
 from pathlib import Path
 from json import loads
+from time import time
 
 import niquests
 
@@ -46,9 +48,12 @@ def install(bin_path: Path, version: str) -> None:
 
     log.info(f"Downloading 'tailwindcss-extra-{get_os_name()}-{get_arch_name()}' {version} ...")
 
-    download_url_to_path(download_url, bin_path)
+    download_path = Path(gettempdir()) / f"tailwindcss-extra-{int(time())}"
+    download_url_to_path(download_url, download_path)
 
-    make_file_executable(bin_path)
+    make_file_executable(download_path)
+
+    rename(download_path, bin_path)
 
 
 def download_url_to_path(download_url: str, dest_path: Path) -> None:
