@@ -4,12 +4,14 @@ from sys import argv, exit
 from platform import system, machine
 from subprocess import run, CompletedProcess
 from pathlib import Path
+from json import loads
 
 import niquests
 
 from pytailwindcss_extra.logger import log
 
 GITHUB_REPO = "dobicinaitis/tailwind-cli-extra"
+MAJOR_TAILWIND_CLI_EXTRA_VERSION = 2
 
 
 def main() -> None:
@@ -20,9 +22,11 @@ def main() -> None:
         bin_dir_path = Path(temp_bin_dir_path)
 
     # TODO: cache the latest version so it doesn't need to send a request each run
-    version = environ.get("PYTAILWINDCSS_EXTRA_VERSION", "latest")
+    version = environ.get("PYTAILWINDCSS_EXTRA_VERSION")
     if version == "latest":
         version = get_latest_version_tag()
+    elif not version:
+        version = get_latest_major_version_tag(MAJOR_TAILWIND_CLI_EXTRA_VERSION)
 
     bin_path = bin_dir_path / f"tailwindcss-extra-{version.replace('.', '-')}"
     if not bin_path.exists():
@@ -93,6 +97,17 @@ def get_latest_version_tag() -> str:
     response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest")
     response.raise_for_status()
     return response.json()["tag_name"]
+
+
+def get_latest_major_version_tag(major_version: int) -> str:
+    log.info(f"Getting latest tailwind-cli-extra version for v{major_version} ...")
+    response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/releases")
+    response.raise_for_status()
+    if not response.text:
+        raise RuntimeError("No releases found")
+    releases = loads(response.text)
+    matching_releases = [release for release in releases if release["tag_name"].startswith(f"v{major_version}.")]
+    return matching_releases[0]["tag_name"]
 
 
 def run_file_with_arguments(file_path: Path, arguments: list[str]) -> CompletedProcess[bytes]:

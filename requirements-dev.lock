@@ -14,10 +14,17 @@ charset-normalizer==3.4.1
     # via niquests
 h11==0.14.0
     # via urllib3-future
+iniconfig==2.1.0
+    # via pytest
 jh2==5.0.8
     # via urllib3-future
 niquests==3.14.0
     # via pytailwindcss-extra
+packaging==24.2
+    # via pytest
+pluggy==1.5.0
+    # via pytest
+pytest==8.3.5
 qh3==1.4.4
     # via urllib3-future
 urllib3-future==2.12.917
