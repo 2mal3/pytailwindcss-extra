@@ -57,7 +57,7 @@ def install(bin_path: Path, version: str) -> None:
 
 
 def download_url_to_path(download_url: str, dest_path: Path) -> None:
-    with niquests.get(download_url, stream=True) as request:
+    with niquests.get(download_url, stream=True, timeout=60) as request:
         request.raise_for_status()
         with open(dest_path, "wb") as file:
             for chunk in request.iter_content(chunk_size=1024 * 1024):
@@ -99,14 +99,14 @@ def get_os_name() -> str:
 
 def get_latest_version_tag() -> str:
     log.info("Getting latest tailwind-cli-extra version ...")
-    response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest")
+    response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/releases/latest", timeout=60)
     response.raise_for_status()
     return response.json()["tag_name"]
 
 
 def get_latest_major_version_tag(major_version: int) -> str:
     log.info(f"Getting latest tailwind-cli-extra version for v{major_version} ...")
-    response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/releases")
+    response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/releases", timeout=60)
     response.raise_for_status()
     if not response.text:
         raise RuntimeError("No releases found")
