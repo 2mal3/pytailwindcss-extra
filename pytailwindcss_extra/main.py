@@ -25,7 +25,8 @@ CACHE_EXPIRATION_HOURS = 24
 def main() -> int:
     bin_dir_path = Path(user_data_dir("pytailwindcss-extra")) / "bin"
 
-    version = get_version(environ.get("PYTAILWINDCSS_EXTRA_VERSION", "major"))
+    cache_file_path = Path(gettempdir()) / "tailwindcss-extra-cache.json"
+    version = get_version(environ.get("PYTAILWINDCSS_EXTRA_VERSION", "major"), cache_file_path)
 
     bin_path = bin_dir_path / f"tailwindcss-extra-{version.replace('.', '-')}"
     if not bin_path.exists():
@@ -38,11 +39,10 @@ def main() -> int:
     return result.returncode
 
 
-def get_version(specifier: str) -> str:
+def get_version(specifier: str, cache_file_path: Path) -> str:
     if specifier not in ["latest", "major"]:
         return specifier
 
-    cache_file_path = Path(gettempdir()) / "tailwindcss-extra-cache.json"
     cached_version = get_cached_version(specifier, cache_file_path)
     if cached_version:
         return cached_version
@@ -66,6 +66,8 @@ def get_cached_version(key: str, cache_file_path: Path) -> str | None:
         cache = loads(file.read())
 
     cache_for_key = cache.get(key)
+    if not cache_for_key:
+        return None
 
     if datetime.fromtimestamp(int(cache_for_key["time"])) + timedelta(hours=CACHE_EXPIRATION_HOURS) < datetime.now():
         return None
