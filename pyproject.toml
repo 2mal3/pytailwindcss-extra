@@ -6,7 +6,7 @@ keywords = ["cli", "tailwind", "css", "daisyui"]
 authors = [
     { name = "2mal3", email = "56305732+2mal3@users.noreply.github.com" },
 ]
-dependencies = ["niquests==3.*"]
+dependencies = ["niquests==3.*", "tqdm==4.*"]
 readme = "README.md"
 license = "LGPL-3.0"
 requires-python = ">= 3.8"
@@ -48,9 +48,7 @@ build-backend = "hatchling.build"
 
 [tool.rye]
 managed = true
-dev-dependencies = [
-    "pytest==8.*",
-]
+dev-dependencies = ["pytest==8.*"]
 
 [tool.hatch.metadata]
 allow-direct-references = true

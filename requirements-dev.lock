@@ -27,6 +27,8 @@ pluggy==1.5.0
 pytest==8.3.5
 qh3==1.4.4
     # via urllib3-future
+tqdm==4.67.1
+    # via pytailwindcss-extra
 urllib3-future==2.12.917
     # via niquests
 wassima==1.2.2

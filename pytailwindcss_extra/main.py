@@ -1,19 +1,22 @@
 from os import environ, rename
 from tempfile import gettempdir
 from stat import S_IXUSR
-from sys import argv
+from sys import argv, stdout, stdin
 from platform import system, machine
 from subprocess import run, CompletedProcess
 from pathlib import Path
 from json import loads
 from time import time
+from typing import Generator
 
 import niquests
+from tqdm import tqdm
 
 from pytailwindcss_extra.logger import log
 
 GITHUB_REPO = "dobicinaitis/tailwind-cli-extra"
 MAJOR_TAILWIND_CLI_EXTRA_VERSION = 2
+MEGABYTE = 1024 * 1024
 
 
 def main() -> int:
@@ -49,19 +52,37 @@ def install(bin_path: Path, version: str) -> None:
     log.info(f"Downloading 'tailwindcss-extra-{get_os_name()}-{get_arch_name()}' {version} ...")
 
     download_path = Path(gettempdir()) / f"tailwindcss-extra-{int(time())}"
-    download_url_to_path(download_url, download_path)
+    if in_non_interactive_mode():
+        all(download_url_to_path(download_url, download_path))
+    else:
+        download_url_to_path_with_progress(download_url, download_path)
 
     make_file_executable(download_path)
 
     rename(download_path, bin_path)
 
 
-def download_url_to_path(download_url: str, dest_path: Path) -> None:
+def in_non_interactive_mode() -> bool:
+    return not stdin.isatty() or not stdout.isatty()
+
+
+def download_url_to_path_with_progress(download_url: str, dest_path: Path) -> None:
+    progress_bar = tqdm(unit="B", unit_scale=True, unit_divisor=1024)
+
+    for chunk, total_size in download_url_to_path(download_url, dest_path):
+        progress_bar.total = total_size
+        progress_bar.update(chunk)
+
+    progress_bar.close()
+
+
+def download_url_to_path(download_url: str, dest_path: Path) -> Generator[tuple[int, int], None, None]:
     with niquests.get(download_url, stream=True, timeout=60) as request:
         request.raise_for_status()
         with open(dest_path, "wb") as file:
-            for chunk in request.iter_content(chunk_size=1024 * 1024):
+            for chunk in request.iter_content(chunk_size=MEGABYTE):
                 file.write(chunk)
+                yield MEGABYTE, int(request.headers["Content-Length"])
 
 
 def get_download_url(version: str) -> str:
