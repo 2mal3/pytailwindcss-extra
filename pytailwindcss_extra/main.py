@@ -5,9 +5,10 @@ from sys import argv, stdout, stdin
 from platform import system, machine
 from subprocess import run, CompletedProcess
 from pathlib import Path
-from json import loads
+from json import loads, dumps
 from time import time
 from typing import Generator
+from datetime import datetime, timedelta
 
 import niquests
 from tqdm import tqdm
@@ -17,6 +18,7 @@ from pytailwindcss_extra.logger import log
 GITHUB_REPO = "dobicinaitis/tailwind-cli-extra"
 MAJOR_TAILWIND_CLI_EXTRA_VERSION = 2
 MEGABYTE = 1024 * 1024
+CACHE_EXPIRATION_HOURS = 24
 
 
 def main() -> int:
@@ -26,12 +28,7 @@ def main() -> int:
     else:
         bin_dir_path = Path(temp_bin_dir_path)
 
-    # TODO: cache the latest version so it doesn't need to send a request each run
-    version = environ.get("PYTAILWINDCSS_EXTRA_VERSION")
-    if version == "latest":
-        version = get_latest_version_tag()
-    elif not version:
-        version = get_latest_major_version_tag(MAJOR_TAILWIND_CLI_EXTRA_VERSION)
+    version = get_version(environ.get("PYTAILWINDCSS_EXTRA_VERSION", "major"))
 
     bin_path = bin_dir_path / f"tailwindcss-extra-{version.replace('.', '-')}"
     if not bin_path.exists():
@@ -43,6 +40,60 @@ def main() -> int:
     log.debug(f"Running '{bin_path}' ...")
     result = run_file_with_arguments(bin_path, argv[1:])
     return result.returncode
+
+
+def get_version(specifier: str) -> str:
+    if specifier not in ["latest", "major"]:
+        return specifier
+
+    cache_file_path = Path(gettempdir()) / f"tailwindcss-extra-cache.json"
+    cached_version = get_cached_version(specifier, cache_file_path)
+    if cached_version:
+        return cached_version
+
+    if specifier == "latest":
+        version = get_latest_version_tag()
+    elif specifier == "major":
+        version = get_latest_major_version_tag(MAJOR_TAILWIND_CLI_EXTRA_VERSION)
+    else:
+        raise RuntimeError(f"Unknown version specifier: {specifier}")
+
+    set_cached_version(specifier, version, cache_file_path)
+    return version
+
+
+def get_cached_version(key: str, cache_file_path: Path) -> str | None:
+    if not cache_file_path.exists():
+        return None
+
+    with cache_file_path.open("r") as file:
+        cache = loads(file.read())
+
+    cache_for_key = cache.get(key)
+
+    if datetime.fromtimestamp(int(cache_for_key["time"])) + timedelta(hours=CACHE_EXPIRATION_HOURS) < datetime.now():
+        return None
+
+    return cache_for_key["version"]
+
+
+def set_cached_version(key: str, version: str, cache_file_path: Path) -> None:
+    if not cache_file_path.exists():
+        with cache_file_path.open("w") as file:
+            file.write("{}")
+
+    with cache_file_path.open("r") as file:
+        cache = loads(file.read())
+
+    new_cache = {
+        "version": version,
+        "time": int(time()),
+    }
+
+    cache[key] = new_cache
+
+    with cache_file_path.open("w") as file:
+        file.write(dumps(cache))
 
 
 # TODO: remove partially downloaded file on error
