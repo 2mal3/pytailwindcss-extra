@@ -9,6 +9,7 @@ from json import loads, dumps
 from time import time
 from typing import Generator
 from datetime import datetime, timedelta
+from platformdirs import user_data_dir
 
 import niquests
 from tqdm import tqdm
@@ -22,18 +23,13 @@ CACHE_EXPIRATION_HOURS = 24
 
 
 def main() -> int:
-    temp_bin_dir_path = environ.get("PYTAILWINDCSS_EXTRA_BIN_DIR")
-    if not temp_bin_dir_path:
-        bin_dir_path: Path = Path(__file__).parent.resolve() / "bin"
-    else:
-        bin_dir_path = Path(temp_bin_dir_path)
+    bin_dir_path = Path(user_data_dir("pytailwindcss-extra")) / "bin"
 
     version = get_version(environ.get("PYTAILWINDCSS_EXTRA_VERSION", "major"))
 
     bin_path = bin_dir_path / f"tailwindcss-extra-{version.replace('.', '-')}"
     if not bin_path.exists():
-        if not bin_dir_path.exists():
-            bin_dir_path.mkdir(parents=True)
+        bin_dir_path.mkdir(parents=True, exist_ok=True)
         install(bin_path, version)
         # TODO: remove old versions
 
@@ -46,7 +42,7 @@ def get_version(specifier: str) -> str:
     if specifier not in ["latest", "major"]:
         return specifier
 
-    cache_file_path = Path(gettempdir()) / f"tailwindcss-extra-cache.json"
+    cache_file_path = Path(gettempdir()) / "tailwindcss-extra-cache.json"
     cached_version = get_cached_version(specifier, cache_file_path)
     if cached_version:
         return cached_version

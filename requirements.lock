@@ -18,6 +18,8 @@ jh2==5.0.8
     # via urllib3-future
 niquests==3.14.0
     # via pytailwindcss-extra
+platformdirs==4.3.7
+    # via pytailwindcss-extra
 qh3==1.4.4
     # via urllib3-future
 tqdm==4.67.1
