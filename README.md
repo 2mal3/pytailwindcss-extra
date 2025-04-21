@@ -43,7 +43,7 @@ _daisyUI_ plugin for the Python ecosystem.
    ```
 
    If the installation was successful, you should see the message about binary being downloaded on the first run. When
-   download is complete, you should see the help output for the `tailwindcss-extra` command. Use it to create a 
+   download is complete, you should see the help output for the `tailwindcss-extra` command. Use it to create a
    new project or work with an existing _Tailwind CSS_ project.
 
 3. Let's create a new project. Go to the directory where you want to create your _Tailwind CSS_ project and initialize it
@@ -73,7 +73,7 @@ using _Tailwind CSS_ and its CLI.
 
 It's not all roses, though. Giving up _Node.js_ means you won't be able to install plugins or additional dependencies
 for your _Tailwind CSS_ setup. At the same time, that might not be a dealbreaker. You can still customize _Tailwind CSS_
-via the _tailwind.config.js_ file. And the standalone build also comes with all official _Tailwind CSS_ plugins
+via your CSS file. And the standalone build also comes with all official _Tailwind CSS_ plugins
 like `@tailwindcss/aspect-ratio`, `@tailwindcss/forms`, `@tailwindcss/line-clamp`, `@tailwindcss/typography` and of
 course `daisyUI`. So in 90% of _Tailwind CSS_ usage cases you should be covered, and the setup is so simplified now.
 
