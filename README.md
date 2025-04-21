@@ -51,6 +51,7 @@ _daisyUI_ plugin for the Python ecosystem.
 
    ```css
    @import "tailwindcss";
+   @plugin "daisyui";
    ```
 
 4. Start a watcher by running:
