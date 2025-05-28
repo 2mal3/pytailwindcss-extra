@@ -178,7 +178,9 @@ def get_latest_version_tag() -> str:
 def get_latest_major_version_tag(major_version: int) -> str:
     log.info(f"Getting latest tailwind-cli-extra version for v{major_version} ...")
 
-    response = niquests.get(f"https://api.github.com/repos/{GITHUB_REPO}/git/matching-refs/tags/v{major_version}", timeout=60)
+    response = niquests.get(
+        f"https://api.github.com/repos/{GITHUB_REPO}/git/matching-refs/tags/v{major_version}", timeout=60
+    )
     response.raise_for_status()
     if not response.text:
         raise RuntimeError("No releases found")
